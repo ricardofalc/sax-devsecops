@@ -29,7 +29,6 @@ jobs:
             hhmbroekman/student-app:latest
   test:
     name: Test
-    needs: [scan]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -49,7 +48,6 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: [test]
     runs-on: self-hosted
     steps:
       - name: Checkout source code
