@@ -28,6 +28,7 @@ jobs:
           tags: |
             ricardofalc/student-app:latest
   test:
+    needs: build
     name: Test
     runs-on: ubuntu-latest
     steps:
@@ -47,6 +48,7 @@ jobs:
           docker ps -aq | xargs docker stop | xargs docker rm
 
   deploy:
+    needs: [build, test]
     name: Deploy
     runs-on: self-hosted
     steps:
