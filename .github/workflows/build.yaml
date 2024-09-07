@@ -99,3 +99,4 @@ jobs:
           sudo kubectl apply -f ${{ github.workspace }}/kubernetes/nginx-service.yaml --force
           sudo kubectl apply -f ${{ github.workspace }}/kubernetes/network-policy.yaml --force
           sudo helm --kubeconfig /etc/rancher/k3s/k3s.yaml install ricardo-falchi /home/ubuntu/harbor/
+          sudo helm --kubeconfig /etc/rancher/k3s/k3s.yaml install ricardo-falchi /home/ubuntu/harbor/
