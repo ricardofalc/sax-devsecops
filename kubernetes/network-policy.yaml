@@ -1,14 +1,35 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-port-30000
+  name: student-devsecops-network-policy
+  namespace: default
 spec:
   podSelector:
     matchLabels:
-      app: quoterxp
-  ingress:
-  - ports:
-    - protocol: TCP
-      port: 30000
+      app: student-devsecops
   policyTypes:
   - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector: {}
+    ports:
+    - protocol: TCP
+      port: 5000
+  egress:
+  - to:
+    - podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values: ["harbor-database", "harbor-redis", "harbor-trivy"]
+  - to:
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
