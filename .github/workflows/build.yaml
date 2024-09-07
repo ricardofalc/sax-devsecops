@@ -48,8 +48,8 @@ jobs:
           ignore-unchanged: false
           write-comment: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          exit-code: false
-          exit-on: never
+          exit-code: true
+          exit-on: vulnerability
 
   test:
     needs: build
