@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-port-3000
+spec:
+  podSelector:
+    matchLabels:
+      app: quoterxp
+  ingress:
+  - ports:
+    - protocol: TCP
+      port: 30000
+  policyTypes:
+  - Ingress
