@@ -31,7 +31,7 @@ RUN poetry install --no-interaction --no-ansi
 COPY --chown=nonrootuser:nonrootuser /content/. /app/
 
 # Expose webserver port
-# EXPOSE 5000
+EXPOSE 5000
 
 # Run the webserver
-CMD ["poetry", "run", "flask", "run", "-h", "0.0.0.0"]
+CMD ["poetry", "run", "flask", "run", "--host=0.0.0.0", "--port=5000"]
