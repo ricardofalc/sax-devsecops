@@ -27,7 +27,7 @@ COPY --chown=nonrootuser:nonrootuser /content/. /app/
 RUN touch /app/access.log && chown nonrootuser:nonrootuser /app/access.log
 
 # Change to non-root user
-USER nonrootuser
+USER 1000
 
 # Expose webserver port
 # EXPOSE 5000
