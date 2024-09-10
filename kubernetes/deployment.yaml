@@ -16,6 +16,8 @@ spec:
       labels:
         app: quoterxp
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
       - name: quoterxp
         image: ricardofalc/student-app:latest
