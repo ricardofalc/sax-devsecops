@@ -25,7 +25,7 @@ COPY /content/. /app/
 
 # Create a non-root user and switch to it
 RUN useradd -m -u 1000 nonrootuser
-USER nonrootuser
+USER 1000
 
 # Expose webserver port
 # EXPOSE 5000
