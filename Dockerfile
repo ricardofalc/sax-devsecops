@@ -1,7 +1,5 @@
 # Use an official Python runtime as a parent image
 FROM python:3.12-slim-bookworm
-RUN useradd -ms /bin/sh nonrootuser
-USER nonrootuser
 
 # Set work directory in the container
 WORKDIR /app
@@ -21,6 +19,9 @@ RUN /root/.local/bin/poetry install --no-interaction --no-ansi
 
 # Copying the project files into the container
 COPY /content/. /app/
+
+RUN useradd -ms /bin/sh nonrootuser
+USER nonrootuser
 
 # Expose webserver port
 # EXPOSE 5000
