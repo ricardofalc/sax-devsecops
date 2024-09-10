@@ -1,0 +1,55 @@
+# Build stage
+FROM python:3.12-slim-bookworm AS builder
+
+# Set work directory in the container
+WORKDIR /app
+
+# Install system dependencies and upgrade pip and setuptools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pipx \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --upgrade pip setuptools
+
+# Install poetry
+RUN pipx install poetry
+
+# Add poetry to PATH
+ENV PATH="/root/.local/bin:$PATH"
+
+# Copy project files
+COPY /content/pyproject.toml /content/poetry.lock /app/
+
+# Project initialization
+RUN poetry config virtualenvs.create true \
+    && poetry install --no-interaction --no-ansi --no-root \
+    && poetry config virtualenvs.create false
+
+# Copy the rest of the project files
+COPY /content/. /app/
+
+# Runtime stage
+FROM python:3.12-slim-bookworm
+
+# Set work directory in the container
+WORKDIR /app
+
+# Create a non-root user
+RUN useradd -m -u 1000 nonrootuser
+
+# Create the log file and set permissions
+RUN touch /app/access.log && chown nonrootuser:nonrootuser /app/access.log
+
+# Copy installed packages and project files from builder stage
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder --chown=nonrootuser:nonrootuser /app /app
+
+# Switch to non-root user
+USER nonrootuser
+
+# Expose webserver port (uncomment if needed)
+# EXPOSE 5000
+
+# Run the webserver
+CMD ["flask", "run", "-h", "0.0.0.0"]
