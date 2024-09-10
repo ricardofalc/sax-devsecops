@@ -20,8 +20,8 @@ RUN /root/.local/bin/poetry install --no-interaction --no-ansi
 # Copying the project files into the container
 COPY /content/. /app/
 
-RUN useradd -ms /bin/sh nonrootuser
-USER nonrootuser
+RUN useradd -m -u 1000 nonrootuser
+USER 1000
 
 # Expose webserver port
 # EXPOSE 5000
