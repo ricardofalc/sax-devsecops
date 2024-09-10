@@ -1,4 +1,4 @@
-# Use an official Python runtime as a parent image
+# Use an official Python runtime as a parent images
 FROM python:3.12-slim-bookworm
 
 # Set work directory in the container
