@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends pipx \
 # Create a non-root user
 RUN useradd -m -u 1000 nonrootuser
 
+# Create a logs directory and set permissions
+RUN mkdir /app/logs && chown nonrootuser:nonrootuser /app/logs
+
 # Install poetry as the non-root user
 USER 1000
 RUN pipx install poetry
