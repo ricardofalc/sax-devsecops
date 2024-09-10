@@ -8,24 +8,24 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends pipx \
     && rm -rf /var/lib/apt/lists/*
 
-# Install poetry
+# Create a non-root user
+RUN useradd -m -u 1000 nonrootuser
+
+# Install poetry as the non-root user
+USER 1000
 RUN pipx install poetry
 
-# Add poetry to PATH
-ENV PATH="/root/.local/bin:$PATH"
+# Add poetry to PATH for the non-root user
+ENV PATH="/home/nonrootuser/.local/bin:$PATH"
 
-# Copy only requirements to cache them in docker layer
-COPY /content/pyproject.toml /content/poetry.lock /app/
+# Copy project files and set ownership
+COPY --chown=nonrootuser:nonrootuser /content/pyproject.toml /content/poetry.lock /app/
 
 # Project initialization
 RUN poetry install --no-interaction --no-ansi
 
-# Copying the project files into the container
-COPY /content/. /app/
-
-# Create a non-root user and switch to it
-RUN useradd -m -u 1000 nonrootuser
-USER 1000
+# Copying the rest of the project files
+COPY --chown=nonrootuser:nonrootuser /content/. /app/
 
 # Expose webserver port
 # EXPOSE 5000
