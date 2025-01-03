@@ -16,12 +16,14 @@ spec:
       labels:
         app: quoterxp
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
       - name: quoterxp
-        image: hhmbroekman/student-app:latest
+        image: ricardofalc/student-app:latest
         imagePullPolicy: Always
         ports:
           - containerPort: 5000
       imagePullSecrets:
         - name: regcred
-         
+
